@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"crud-api-with-go-gin-gorm/database"
+	"crud-api-with-go-gin-gorm/controllers"
 )
 
 func main(){
@@ -16,12 +17,18 @@ func main(){
 	}
 
 	router := gin.Default()
+	
 
 	router.GET("/", func(c *gin.Context){
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Welcome To BookStore",
 		})
 	})
+
+	bookRoutes := router.Group("/books") 
+	{
+		bookRoutes.POST("", controllers.CreateBook)
+	}
 
 	router.Run()
 
