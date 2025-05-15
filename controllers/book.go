@@ -8,6 +8,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func GetAllBooks(c *gin.Context){
+	var books []models.Book
+
+	result := database.DB.Find(&books)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to fetch books",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, books)
+}
+
 func CreateBook(c *gin.Context) {
 	var book models.Book
 
