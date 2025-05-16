@@ -27,6 +27,7 @@ func main(){
 
 	bookRoutes := router.Group("/books") 
 	{
+		bookRoutes.GET(":id", controllers.GetBook)
 		bookRoutes.GET("", controllers.GetAllBooks)
 		bookRoutes.POST("", controllers.CreateBook)
 	}
