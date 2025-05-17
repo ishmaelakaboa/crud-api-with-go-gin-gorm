@@ -28,6 +28,8 @@ func main(){
 	bookRoutes := router.Group("/books") 
 	{
 		bookRoutes.GET(":id", controllers.GetBook)
+		bookRoutes.PUT(":id", controllers.UpdateBook)
+		bookRoutes.DELETE(":id", controllers.DeleteBook)
 		bookRoutes.GET("", controllers.GetAllBooks)
 		bookRoutes.POST("", controllers.CreateBook)
 	}

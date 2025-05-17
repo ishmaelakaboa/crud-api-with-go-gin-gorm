@@ -24,6 +24,57 @@ func GetBook(c *gin.Context){
 
 }
 
+func DeleteBook(c *gin.Context){
+	id := c.Param("id")
+	var book models.Book
+
+	result := database.DB.First(&book, id)
+	if result.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "Book Not Found",
+		})
+		return
+	}
+
+	database.DB.Delete(&book)
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Book deleted successfuly",
+	})
+}
+
+func UpdateBook(c *gin.Context){
+	id := c.Param("id")
+	var book models.Book
+
+	result := database.DB.First(&book, id)
+	if result.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "Book Not Found",
+		})
+		return
+	}
+
+	var updateData models.Book
+	if err := c.ShouldBindJSON(&updateData); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid request data",
+		})
+		return
+	}
+
+	book.Title = updateData.Title
+	book.Author = updateData.Author
+	book.Year = updateData.Year
+
+	database.DB.Save(&book)
+
+	c.JSON(http.StatusOK, book)
+}
+
+
+
+
 
 func GetAllBooks(c *gin.Context){
 	var books []models.Book
